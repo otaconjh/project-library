@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+* {
+  font-family: "Roboto Mono", monospace;
+}
+table {
+  width: 500px;
+  border: 1px solid;
+}
+.modal-container {
+  position: fixed;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  margin: auto;
+  background-color: #000000bb;
+  transition: all 0.35s ease-in;
+}
+#new-book-form {
+  min-width: 300px;
+  width: 40%;
+  height: 30%;
+  border: 1px solid white;
+  margin: 50px auto;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-around; */
+  align-items: center;
+  border-radius: 10px;
+  padding-top: 50px;
+}
+.modal-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* .modal-visible {
+  opacity: 1;
+  visibility: visible;
+} */
