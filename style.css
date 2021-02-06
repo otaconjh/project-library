@@ -2,6 +2,9 @@
 * {
   font-family: "Roboto Mono", monospace;
 }
+.main-container {
+  display: flex;
+}
 table {
   width: 500px;
   border: 1px solid;

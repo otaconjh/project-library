@@ -1,11 +1,5 @@
-let myLibrary = [
-  {
-    title: "The Hobbit",
-    author: "J.R.R. Tolkien",
-    pages: "295",
-    read: "true",
-  },
-];
+let myLibrary = [];
+myLibrary.push(new BookConstructor("The Hobbit", "J.R.R. Tolkien", "295", true));
 
 function BookConstructor(title, author, pages, read) {
   this.title = title;
@@ -21,6 +15,9 @@ function addBookToLibrary(book, library) {
   newLibrary.push(book);
   return newLibrary;
 }
+BookConstructor.prototype.toggleRead = function () {
+  this.read = !this.read;
+};
 /**
  *
  * @param {Number} bookIndex
@@ -36,7 +33,7 @@ function displayBooks(myLibrary) {
   tbody.innerHTML = "";
   myLibrary.forEach((book, index) => {
     let bookRow = document.createElement("tr");
-    bookRow.innerHTML = `<td>${book.title}</td><td>${book.author}</td><td>${book.pages}</td><td>${book.read}</td><td><button class="delete-button">Delete</button>`;
+    bookRow.innerHTML = `<td>${book.title}</td><td>${book.author}</td><td>${book.pages}</td><td>${book.read}</td><td><button class="toggle-button">Toggle</button></td><td><button class="delete-button">Delete</button></td>`;
     bookRow.setAttribute("data-index", index);
     tbody.appendChild(bookRow);
   });
@@ -93,8 +90,14 @@ tbody.addEventListener("click", checkButton);
 function checkButton(event) {
   if (event.target.className == "delete-button") {
     console.log(event.target);
-    let bookIndex = Number(event.target.parentElement.parenteElement.dataset.index);
+    let bookIndex = Number(event.target.parentElement.parentElement.dataset.index);
     myLibrary = deleteBookAtIndex(bookIndex, myLibrary);
+    displayBooks(myLibrary);
+  }
+  if (event.target.className == "toggle-button") {
+    console.log(event.target);
+    let bookIndex = Number(event.target.parentElement.parentElement.dataset.index);
+    myLibrary[bookIndex].toggleRead();
     displayBooks(myLibrary);
   }
 }
