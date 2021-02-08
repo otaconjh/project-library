@@ -1,6 +1,8 @@
 let myLibrary = [];
-myLibrary.push(new BookConstructor("The Hobbit", "J.R.R. Tolkien", "295", true));
-
+if (localStorage.getItem("library") != null) {
+  myLibrary = JSON.parse(localStorage.getItem("library"));
+  displayBooks(myLibrary);
+}
 function BookConstructor(title, author, pages, read) {
   this.title = title;
   this.author = author;
@@ -10,23 +12,23 @@ function BookConstructor(title, author, pages, read) {
 BookConstructor.prototype.info = function () {
   return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read ? "read" : "not read yet"}`;
 };
-function addBookToLibrary(book, library) {
-  let newLibrary = Array.from(library);
-  newLibrary.push(book);
-  return newLibrary;
-}
 BookConstructor.prototype.toggleRead = function () {
   this.read = !this.read;
 };
-/**
- *
- * @param {Number} bookIndex
- * @param {Array} library
- */
-function deleteBookAtIndex(bookIndex, library) {
-  let newLibrary = [...library.slice(0, bookIndex), ...library.slice(bookIndex + 1)];
+
+function addBookToLibrary(book, library) {
+  let newLibrary = Array.from(library);
+  newLibrary.push(book);
+  localStorage.setItem("library", JSON.stringify(newLibrary));
   return newLibrary;
 }
+
+function deleteBookAtIndex(bookIndex, library) {
+  let newLibrary = [...library.slice(0, bookIndex), ...library.slice(bookIndex + 1)];
+  localStorage.setItem("library", JSON.stringify(newLibrary));
+  return newLibrary;
+}
+
 function displayBooks(myLibrary) {
   // Get DOM element for table body
   let tbody = document.getElementById("table-body");
@@ -38,7 +40,7 @@ function displayBooks(myLibrary) {
     tbody.appendChild(bookRow);
   });
 }
-const parseBookInfo = (event) => {
+function parseBookInfo(event) {
   event.preventDefault();
   console.log(event);
   let fieldArr = Array.from(event.target.elements);
@@ -58,7 +60,7 @@ const parseBookInfo = (event) => {
   let removeModalEvent = new CustomEvent("click", {detail: {bookAdded: true}});
   window.dispatchEvent(removeModalEvent);
   event.target.reset();
-};
+}
 
 const showModal = (event) => {
   console.log(event);
@@ -67,12 +69,17 @@ const showModal = (event) => {
 
   // modalContainer.classList.add("modal-visible");
 };
+
 const removeModal = (event) => {
   let modalContainer = document.getElementById("modal");
   if (event.target == modalContainer || event.detail.bookAdded) {
     modalContainer.classList.add("modal-hidden");
   }
 };
+
+function refreshLocalStorage(library) {
+  localStorage.setItem("library", JSON.stringify(library));
+}
 
 let bookButton = document.getElementById("new-book-button");
 bookButton.addEventListener("click", showModal);
